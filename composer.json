@@ -1,0 +1,42 @@
+{
+    "name": "fobia/laravel-scout-solr",
+    "description": "Laravel Scout Solr engine.",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Dmitriy Tyurin",
+            "email": "fobia3d@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=7.0",
+        "laravel/scout": "~6.0",
+        "solarium/solarium": "~4.0",
+        "illuminate/bus": "~5.4",
+        "illuminate/contracts": "~5.4",
+        "illuminate/database": "~5.4",
+        "illuminate/pagination": "~5.4",
+        "illuminate/support": "~5.4"
+    },
+    "autoload": {
+        "psr-0": {
+            "Fobia\\Solr\\Solrquent": "src/"
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0-dev"
+        },
+        "laravel": {
+            "providers": [
+                "Fobia\\Solr\\Solrquent\\ScoutServiceProvider"
+            ]
+        }
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}

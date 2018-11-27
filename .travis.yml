@@ -31,7 +31,7 @@ before_install:
 before_script:
   - composer require --prefer-dist --dev "illuminate/bus:~${USE_LARAVEL_VERSION}"
 #  - solr-${SOLR_VERSION}/bin/solr start -e techproducts
-  - solr-${SOLR_VERSION}/bin/solr start -c
+  - solr-${SOLR_VERSION}/bin/solr start
 #  - solr-${SOLR_VERSION}/bin/solr create_collection -c products
   - solr-${SOLR_VERSION}/bin/solr create -c products
 #  - ./bin/solr delete -c flms

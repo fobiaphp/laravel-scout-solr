@@ -3,8 +3,8 @@
 namespace Fobia\Tests;
 
 use Fobia\Tests\Fixtures\ProductSearchable;
-use Solarium\Core\Event\Events;
 use Solarium\Client as SolrClient;
+use Solarium\Core\Event\Events;
 
 /**
  * Class SolrSearchTest

@@ -41,17 +41,17 @@ class SolrSearchEngine extends Engine
     }
 
     /**
-     * @return callable
+     * @return callable|null
      */
-    public function getOnCommitHandle() : ?callable
+    public function getOnCommitHandle()
     {
         return $this->onCommitHandle;
     }
 
     /**
-     * @param callable $onCommitHandle
+     * @param callable|null $onCommitHandle
      */
-    public function setOnCommitHandle(callable $onCommitHandle = null) : void
+    public function setOnCommitHandle(callable $onCommitHandle = null)
     {
         $this->onCommitHandle = $onCommitHandle;
     }

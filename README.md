@@ -1,6 +1,9 @@
 laravel-scout-solr
 ==================
 
+[![Build Status](https://travis-ci.org/fobiaphp/laravel-scout-solr.svg?branch=develop)](https://travis-ci.org/fobiaphp/laravel-scout-solr)
+
+
 ## Introduction
 
 Laravel Scout or Solr Engine
@@ -22,7 +25,7 @@ use Fobia\Solrquent\ScoutSolr\SolrSearchEngine;
 class AppServiceProvider extends ServiceProvider
 {
     // ...
-    
+
     public function register()
     {
         // ...
@@ -32,7 +35,7 @@ class AppServiceProvider extends ServiceProvider
     }
 }
 ```
-, тут `$solrClient` - это клиет подключения к Solr, a `$onCommitHandle` функция обратного вызова 
+, тут `$solrClient` - это клиет подключения к Solr, a `$onCommitHandle` функция обратного вызова
 перед отправкой запроса update в Solr.
 `$onCommitHandle(\Solarium\QueryType\Update\Query\Query $query);`
 
@@ -46,7 +49,7 @@ class AppServiceProvider extends ServiceProvider
 ```php
  $result = Product::search('name:foo')->getFullResult();
  /* $result instanceof \Solarium\QueryType\Select\Result\Result */
- $result->getModels(); 
+ $result->getModels();
 ```
 
 #### toSolrUrl

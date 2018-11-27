@@ -81,22 +81,6 @@ class SolrSearchEngine extends Engine
         }
 
         $query = $this->client->createUpdate();
-        // $models->each(function ($model) use (&$query) {
-        //     $array = $model->toSearchableArray();
-        //     $softDeleted = array_get($model->scoutMetadata(), '__soft_deleted', null);
-        //     if ($softDeleted !== null) {
-        //         $array['__soft_deleted'] = $softDeleted;
-        //     }
-        //
-        //     // Or Algolia example
-        //     // $array = array_merge(
-        //     //     $model->toSearchableArray(), $model->scoutMetadata()
-        //     // );
-        //     // $array = array_merge(['id' => $model->getScoutKey()], $array);
-        //
-        //     $document = $query->createDocument($array);
-        //     $query->addDocument($document);
-        // });
 
         $modelsRelations = [];
         // while ($model = $models->shift()) {
@@ -208,14 +192,6 @@ class SolrSearchEngine extends Engine
                 return $models[$hit['id']];
             }
         })->filter()->values();
-
-        // $models->each(function ($model) use ($docs) {
-        //     /** @var \Illuminate\Database\Eloquent\Model $model */
-        //     $solrDock = $docs->firstWhere('id', '=', $model->getScoutKey());
-        //     $model->setRelation('solr', new Fluent($solrDock));
-        // });
-        //
-        // return $models;
     }
 
     /**

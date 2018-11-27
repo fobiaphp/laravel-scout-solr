@@ -79,6 +79,17 @@ class SolrToQueryTest extends TestCase
         });
     }
 
+    public function testToSolrUrl()
+    {
+        $query = 'products/select?omitHeader=true&wt=json&json.nl=flat&q=name%3A5&start=0&rows=15&fl=%2A%2Cscore';
+
+        $model = new ProductSearchable();
+        $bl = $model->search('name:5');
+        $result = $bl->toSolrUrl();
+
+        $this->assertEquals($query, $result);
+    }
+
     public function testToQuery()
     {
         $query = 'products/select?omitHeader=true&wt=json&json.nl=flat&q=name%3A5&start=0&rows=15&fl=%2A%2Cscore';

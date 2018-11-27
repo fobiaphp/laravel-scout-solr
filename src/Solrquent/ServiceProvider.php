@@ -2,12 +2,15 @@
 
 namespace Fobia\Solrquent;
 
+use Fobia\Solrquent\ScoutSolr\ModelsResult;
 use Fobia\Solrquent\ScoutSolr\SolrSearchEngine;
 use Illuminate\Support\ServiceProvider as BaseServiceProvider;
 use Laravel\Scout\Builder;
 use Laravel\Scout\EngineManager;
 use Solarium\Client as SolrClient;
 use Solarium\Core\Client\Client;
+use Solarium\Core\Client\Endpoint;
+use Solarium\Core\Client\Response;
 
 /**
  * Class ServiceProvider
@@ -42,18 +45,48 @@ class ServiceProvider extends BaseServiceProvider
             /** @var \Solarium\QueryType\Select\Result\Result $result */
             $result = $this->engine()->search($this);
 
-            $models = $this->engine()->map($this, $result, $this->model);
-            $result->models = $models;
-            return $result;
+            // $models = $this->engine()->map($this, $result, $this->model);
+            // $result->models = $models;
+            // return $result;
 
-            // $self = $this;
-            // $model = $this->model;
-            // $c = function () use ($self, $result, $model) {
-            //     return $this->engine()->map($this, $result, $this->model);
-            // };
-            //
-            // $r = new ModelsResult($result, $c);
-            // return $r;
+            $modelsResult = new ModelsResult($result, $this->engine(), $this);
+
+            return $modelsResult;
+        });
+
+        Builder::macro('toSolrUrl', function () {
+            /** @var Builder $self */
+            /** @var \Solarium\QueryType\Select\Result\Result $result */
+            $builder = $this;
+
+            /** @var SolrSearchEngine $engine */
+            $engine = $builder->engine();
+
+            $listenerPreExecuteRequest = function ($event) {
+                /** @var \Solarium\Core\Event\PreExecuteRequest $event */
+                /** @var \Solarium\QueryType\Select\RequestBuilder $builder */
+                /** @var \Solarium\QueryType\Select\Query\Query $query */
+                $endpoint = $event->getEndpoint();
+                if ($endpoint instanceof Endpoint) {
+                    $endpoint = $endpoint->getCore();
+                }
+                $url = $event->getRequest()->getUri();
+
+                $str = $endpoint . '/' . $url;
+                $response = new Response($str, [
+                    'HTTP/1.1 200 OK',
+                ]);
+
+                $event->setResponse($response);
+            };
+
+            $eventName = \Solarium\Core\Event\Events::PRE_EXECUTE_REQUEST;
+
+            $engine->getClient()->getEventDispatcher()->addListener($eventName, $listenerPreExecuteRequest);
+            $result = $engine->search($builder);
+            $engine->getClient()->getEventDispatcher()->removeListener($eventName, $listenerPreExecuteRequest);
+
+            return $result->getResponse()->getBody();
         });
     }
 

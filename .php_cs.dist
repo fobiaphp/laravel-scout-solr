@@ -1,0 +1,132 @@
+<?php
+
+/*
+|--------------------------------------------------------------------------
+| PHP CODE STYLE Config
+|--------------------------------------------------------------------------
+|
+| Сайт проекта:  https://cs.sensiolabs.org/
+|
+| Интерактивная документация по правилам:
+|    See: https://mlocati.github.io/php-cs-fixer-configurator/
+|
+| Установка (скачать упакованый файл)
+|   $ wget --no-check-certificate -q https://cs.sensiolabs.org/download/php-cs-fixer-v2.phar -O /usr/local/bin/php-cs-fixer \
+|          && chmod +x /usr/local/bin/php-cs-fixer
+*/
+// =========================================================
+
+$rules = [
+    '@PSR1' => true,
+    '@PSR2' => true,
+    '@Symfony' => true,
+    '@Symfony:risky' => false,
+    '@PHP71Migration' => true,
+    // ----------------------
+
+    'align_multiline_comment' => true,
+    'array_indentation' => true,
+    'array_syntax' => [
+        'syntax' => 'short',
+    ],
+    // -@Symfony
+    'blank_line_before_statement' => [
+        'statements' => [
+            'try',
+        ],
+    ],
+    // -@Symfony
+    'class_attributes_separation' => [
+        'elements' => [
+            'method', 'property',
+        ],
+    ],
+    // -@Symfony
+    'concat_space' => [
+        'spacing' => 'one', // "none"
+    ],
+    'doctrine_annotation_spaces' => true,
+    // Убедитесь, что кода нет в той же строке, что и открытый PHP-тег.
+    'linebreak_after_opening_tag' => true,
+    'method_chaining_indentation' => true,
+    'multiline_comment_opening_closing' => true,
+    'no_alternative_syntax' => true,
+    // -@Symfony Удалить конечные запятые в вызовах функций списка.
+    'no_trailing_comma_in_list_call' => false,
+    // -@Symfony Однострочные массивы PHP не должны иметь запятую.
+    'no_trailing_comma_in_singleline_array' => false,
+    // Сортировка use
+    'ordered_imports' => true,
+    'php_unit_namespaced' => true,
+    // Все элементы данных тегов phpdoc должны быть выровнены по вертикали.
+    'phpdoc_align' => [
+        'tags' => [
+            'type',
+        ],
+    ],
+    // -@Symfony // Аннотации в phpdocs должны быть сгруппированы вместе
+    'phpdoc_separation' => false,
+    'psr4' => true,
+    // -@Symfony // Должно быть одно место перед двоеточием, и одно место после него в декларации типа возврата
+    'return_type_declaration' => [
+        'space_before' => 'one', // function foo(int $a) : string {}
+    ],
+    // -@Symfony Однострочные комментарии и многострочные комментарии только с одной строкой фактического содержимого должны использовать синтаксис `//`
+    'single_line_comment_style' => false,
+    // @PHP71Migration @PSR2 @Symfony // облость видимости
+    'visibility_required' => [
+        'elements' => [
+            'property', 'method', // const
+        ],
+    ],
+    'yoda_style' => [
+        'equal' => null,  // true
+        'identical' => null, // true
+        'less_and_greater' => null, // null
+    ],
+
+    'phpdoc_no_empty_return' => false,
+    'no_empty_comment' => false,
+    'single_quote' => false,
+    'phpdoc_to_comment' => false,
+    'phpdoc_summary' => false,
+    'phpdoc_inline_tag' => false,
+    'increment_style' => false,
+    'no_extra_blank_lines' => [
+        'tokens' => [
+            "break",
+            "continue",
+            "curly_brace_block",
+            "extra",
+            "parenthesis_brace_block",
+            //"return",
+            //"square_brace_block",
+            "throw",
+            "use",
+            "use_trait",
+            "switch", "case", "default"
+        ],
+    ],
+];
+// ======================================================
+
+$path = getcwd();
+$exclude = [
+
+];
+$in = [
+    $path . '/src',
+    $path . '/tests',
+];
+// -----------------------------------------------------------
+
+$finder = PhpCsFixer\Finder::create()
+    ->exclude((array) $exclude)
+    ->in((array) $in);
+
+$config = PhpCsFixer\Config::create()
+    ->setRiskyAllowed(true)
+    ->setRules($rules)
+    ->setFinder($finder);
+
+return $config;

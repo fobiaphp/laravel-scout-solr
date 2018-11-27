@@ -2,8 +2,8 @@
 
 namespace Fobia\Tests;
 
+use Fobia\Solrquent\ScoutSolr\ModelsResult;
 use Fobia\Tests\Fixtures\ProductSearchable;
-use Solarium\Client as SolrClient;
 use Solarium\Core\Event\Events;
 
 /**
@@ -17,6 +17,27 @@ class SolrSearchTest extends TestCase
     {
         parent::setUp();
         $this->setUpSolr();
+
+        $this->addMockResult('name:2', <<<JSON
+{
+  "responseHeader":{
+    "zkConnected":true,
+    "status":0,
+    "QTime":1,
+    "params":{
+      "q":"name:2"}},
+  "response":{"numFound":10,"start":0,"docs":[
+      {
+        "id":"5",
+        "name":["product 5"],
+        "_version_":1617877515428167680},
+        {
+        "id":"1",
+        "name":["product 1"],
+        "_version_":1617877515428167680}]
+  }}
+JSON
+        );
     }
 
     protected function setUpSolr()
@@ -25,12 +46,6 @@ class SolrSearchTest extends TestCase
         /** @var \Solarium\Client $client */
         $client->getPlugin('postbigrequest');
 
-        // $subscriber = new EventSubscriber();
-        // $client->getEventDispatcher()->removeSubscriber($subscriber);
-        // $client->getEventDispatcher()->addSubscriber($subscriber);
-
-        // $client->getEventDispatcher()->addListener(Events::PRE_EXECUTE, function ($event) {
-        // $client->getEventDispatcher()->addListener(Events::PRE_CREATE_RESULT, function ($event) {
         $client->getEventDispatcher()->addListener(Events::PRE_EXECUTE_REQUEST, function ($event) {
             $q = $event->getRequest()->getParams()['q'];
 
@@ -86,8 +101,17 @@ JSON
         $this->assertEquals(5, $model->getScoutKey());
     }
 
-    public function testSearchC()
+    public function testPagiinate()
     {
+        $docs = [];
+        for ($i = 1; $i <= 10; $i++) {
+            $docs[] = [
+                "id" => "$i",
+                "name" => ["product $i"],
+                "_version_" => 1617877515428167680,
+            ];
+        }
+        $docs = json_encode(array_slice($docs, 0, 2));
         $this->addMockResult('name:5', <<<JSON
 {
   "responseHeader":{
@@ -96,35 +120,26 @@ JSON
     "QTime":1,
     "params":{
       "q":"name:5"}},
-  "response":{"numFound":1,"start":0,"docs":[
-      {
-        "id":"5",
-        "name":["product 5"],
-        "_version_":1617877515428167680}]
+  "response":{"numFound":10,"start":0,"docs": $docs
   }}
 JSON
         );
-
         $model = new ProductSearchable();
-        /** @var \Fobia\Solrquent\ScoutSolr\SolrSearchEngine $engine */
-        $engone = $model->searchableUsing();
+        $paginate = $model->search('name:5')->paginate(2);
 
-        $solr = $this->app->make('solrquent.solr');
-        /** @var SolrClient $solr */
-        $select = $solr->createSelect();
-        $select = $select->setQuery('name:5');
+        /** @var \Illuminate\Pagination\LengthAwarePaginator $paginate */
+        $this->assertInstanceOf('\Illuminate\Pagination\LengthAwarePaginator', $paginate);
+        $this->assertCount(2, $paginate);
+        $this->assertEquals(5, $paginate->lastPage());
+    }
 
-        $bl = $model->search($select);
+    public function testGetFullResult()
+    {
+        $model = new ProductSearchable();
+        $result = $model->search('name:2')->getFullResult();
 
-        /** @var \Illuminate\Database\Eloquent\Collection $result */
-        $result = $bl->get();
-        $this->assertInstanceOf(\Illuminate\Database\Eloquent\Collection::class, $result);
-
-        $model = $result->first();
-
-        $this->assertInstanceOf(\Illuminate\Database\Eloquent\Model::class, $model);
-        $this->assertTrue(in_array('Laravel\Scout\Searchable', trait_uses_recursive($model)));
-
-        $this->assertEquals(5, $model->getScoutKey());
+        /** @var ModelsResult $result */
+        $this->assertInstanceOf(ModelsResult::class, $result);
+        $this->assertInstanceOf('\Illuminate\Database\Eloquent\Model', $result->getModels()->first());
     }
 }

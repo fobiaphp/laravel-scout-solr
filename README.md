@@ -39,10 +39,27 @@ class AppServiceProvider extends ServiceProvider
 В нее вы установить нужно ли отправлять команду `commit`
 
 
+#### getFullResult
+
+Расширеный результат ответа с колекцией моделей
+
+```php
+ $result = Product::search('name:foo')->getFullResult();
+ /* $result instanceof \Solarium\QueryType\Select\Result\Result */
+ $result->getModels(); 
+```
+
+#### toSolrUrl
+
+```php
+// Get request url string
+$url = Product::search('name:foo')->toSolrUrl();
+```
+
 ## License
 
 Laravel Scout is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT)
 
-https://github.com/pxslip/laravel-scout-solr/blob/master/src/Builder.php
-https://github.com/grey-dev-0/laravel-scout-solr/blob/master/src/SolrEngine.php
-https://github.com/jeroenherczeg/laravel-scout-solr/blob/master/src/SolrProvider.php
+- https://github.com/pxslip/laravel-scout-solr/blob/master/src/Builder.php
+- https://github.com/grey-dev-0/laravel-scout-solr/blob/master/src/SolrEngine.php
+- https://github.com/jeroenherczeg/laravel-scout-solr/blob/master/src/SolrProvider.php

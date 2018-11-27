@@ -1,0 +1,22 @@
+CREATE TABLE `offers` ( `id` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, `product_id` INTEGER NOT NULL, `company_id` INTEGER NOT NULL, `updated_at` TEXT, `created_at` TEXT, `deleted_at` TEXT DEFAULT NULL );
+
+INSERT INTO offers (id, product_id, company_id, updated_at, created_at, deleted_at) VALUES (1, 1, 1, '2018-11-22 21:18:12', '2018-11-22 21:18:12', null);
+INSERT INTO offers (id, product_id, company_id, updated_at, created_at, deleted_at) VALUES (2, 1, 2, '2018-11-22 21:18:12', '2018-11-22 21:18:12', null);
+INSERT INTO offers (id, product_id, company_id, updated_at, created_at, deleted_at) VALUES (3, 2, 1, '2018-11-22 21:18:12', '2018-11-22 21:18:12', null);
+INSERT INTO offers (id, product_id, company_id, updated_at, created_at, deleted_at) VALUES (4, 2, 2, '2018-11-22 21:18:12', '2018-11-22 21:18:12', null);
+INSERT INTO offers (id, product_id, company_id, updated_at, created_at, deleted_at) VALUES (5, 3, 1, '2018-11-22 21:18:12', '2018-11-22 21:18:12', null);
+INSERT INTO offers (id, product_id, company_id, updated_at, created_at, deleted_at) VALUES (6, 3, 2, '2018-11-22 21:18:12', '2018-11-22 21:18:12', null);
+INSERT INTO offers (id, product_id, company_id, updated_at, created_at, deleted_at) VALUES (7, 4, 1, '2018-11-22 21:18:12', '2018-11-22 21:18:12', null);
+INSERT INTO offers (id, product_id, company_id, updated_at, created_at, deleted_at) VALUES (8, 4, 2, '2018-11-22 21:18:12', '2018-11-22 21:18:12', null);
+INSERT INTO offers (id, product_id, company_id, updated_at, created_at, deleted_at) VALUES (9, 5, 1, '2018-11-22 21:18:12', '2018-11-22 21:18:12', null);
+INSERT INTO offers (id, product_id, company_id, updated_at, created_at, deleted_at) VALUES (10, 5, 2, '2018-11-22 21:18:12', '2018-11-22 21:18:12', null);
+INSERT INTO offers (id, product_id, company_id, updated_at, created_at, deleted_at) VALUES (11, 6, 1, '2018-11-22 21:18:12', '2018-11-22 21:18:12', null);
+INSERT INTO offers (id, product_id, company_id, updated_at, created_at, deleted_at) VALUES (12, 6, 2, '2018-11-22 21:18:12', '2018-11-22 21:18:12', null);
+INSERT INTO offers (id, product_id, company_id, updated_at, created_at, deleted_at) VALUES (13, 7, 1, '2018-11-22 21:18:12', '2018-11-22 21:18:12', null);
+INSERT INTO offers (id, product_id, company_id, updated_at, created_at, deleted_at) VALUES (14, 7, 2, '2018-11-22 21:18:12', '2018-11-22 21:18:12', null);
+INSERT INTO offers (id, product_id, company_id, updated_at, created_at, deleted_at) VALUES (15, 8, 1, '2018-11-22 21:18:12', '2018-11-22 21:18:12', null);
+INSERT INTO offers (id, product_id, company_id, updated_at, created_at, deleted_at) VALUES (16, 8, 2, '2018-11-22 21:18:12', '2018-11-22 21:18:12', null);
+INSERT INTO offers (id, product_id, company_id, updated_at, created_at, deleted_at) VALUES (17, 9, 1, '2018-11-22 21:18:12', '2018-11-22 21:18:12', null);
+INSERT INTO offers (id, product_id, company_id, updated_at, created_at, deleted_at) VALUES (18, 9, 2, '2018-11-22 21:18:12', '2018-11-22 21:18:12', null);
+INSERT INTO offers (id, product_id, company_id, updated_at, created_at, deleted_at) VALUES (19, 10, 1, '2018-11-22 21:18:12', '2018-11-22 21:18:12', null);
+INSERT INTO offers (id, product_id, company_id, updated_at, created_at, deleted_at) VALUES (20, 10, 2, '2018-11-22 21:18:12', '2018-11-22 21:18:12', null);

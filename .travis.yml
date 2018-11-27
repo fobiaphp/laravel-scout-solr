@@ -1,0 +1,45 @@
+language: php
+
+sudo: true
+
+php:
+  - 7.0
+  - 7.1
+  - 7.2
+  - hhvm
+
+env:
+  global:
+    - SOLR_VERSION=7.5.0
+  matrix:
+    - USE_LARAVEL_VERSION=5.4.0
+    - USE_LARAVEL_VERSION=5.5.0
+    - USE_LARAVEL_VERSION=5.6.0
+    - USE_LARAVEL_VERSION=5.7.0
+
+cache:
+  directories:
+    - $HOME/.composer/cache
+    - solr_downloads
+
+before_install:
+  - composer global require "hirak/prestissimo"
+  - ls solr_downloads/
+  - wget -nc --continue -v --tries=3 --directory-prefix=solr_downloads "http://ftp.halifax.rwth-aachen.de/apache/lucene/solr/${SOLR_VERSION}/solr-${SOLR_VERSION}.tgz"
+  - tar -xzf solr_downloads/solr-${SOLR_VERSION}.tgz
+
+before_script:
+  - composer require --prefer-dist --dev "illuminate/bus:~${USE_LARAVEL_VERSION}"
+#  - solr-${SOLR_VERSION}/bin/solr start -e techproducts
+  - solr-${SOLR_VERSION}/bin/solr start -c
+#  - solr-${SOLR_VERSION}/bin/solr create_collection -c products
+  - solr-${SOLR_VERSION}/bin/solr create -c products
+#  - ./bin/solr delete -c flms
+  # make configSet's available for techproducts instance
+#  - cp -R  solr-${SOLR_VERSION}/server/solr/configsets solr-${SOLR_VERSION}/example/techproducts/solr/
+
+script:
+  - ./vendor/bin/phpunit --coverage-text
+
+notifications:
+  email: false

@@ -1,6 +1,6 @@
 <?php
 
-namespace Fobia\Solr\Solrquent;
+namespace Fobia\Solrquent;
 
 /**
  * Class Connection
@@ -19,8 +19,7 @@ class Connection
     public function getPdo()
     {
         if ($this->pdo === null) {
-            $this->pdo = new class ()
-            {
+            $this->pdo = new class() {
                 public function quote($value)
                 {
                     return $value;

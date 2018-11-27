@@ -7,7 +7,6 @@ use Fobia\Tests\Fixtures\ProductSearchable;
 use Laravel\Scout\Builder;
 use Minimalcode\Search\Criteria;
 use Solarium\Client as SolrClient;
-use Solarium\Core\Client\Client;
 use Solarium\Core\Client\Endpoint;
 use Solarium\Core\Client\Response;
 

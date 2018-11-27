@@ -22,19 +22,18 @@ cache:
 
 before_install:
   - composer global require "hirak/prestissimo"
-  - ls solr_downloads/
-    #  - wget -nc --continue -v --tries=3 --directory-prefix=solr_downloads "http://ftp.halifax.rwth-aachen.de/apache/lucene/solr/${SOLR_VERSION}/solr-${SOLR_VERSION}.tgz"
-    #  - tar -xzf solr_downloads/solr-${SOLR_VERSION}.tgz
+#  - ls solr_downloads/
+#  - wget -nc --continue -v --tries=3 --directory-prefix=solr_downloads "http://ftp.halifax.rwth-aachen.de/apache/lucene/solr/${SOLR_VERSION}/solr-${SOLR_VERSION}.tgz"
+#  - tar -xzf solr_downloads/solr-${SOLR_VERSION}.tgz
 
 before_script:
   - composer require --prefer-dist --dev "illuminate/bus:~${USE_LARAVEL_VERSION}"
-    #  - solr-${SOLR_VERSION}/bin/solr start
-    #  - solr-${SOLR_VERSION}/bin/solr create -c products
-    #  - ./bin/solr delete -c flms
+#  - solr-${SOLR_VERSION}/bin/solr start
+#  - solr-${SOLR_VERSION}/bin/solr create -c products
+#  - ./bin/solr delete -c flms
 
 script:
   - ./vendor/bin/phpunit --coverage-text
 
 notifications:
   email: false
-

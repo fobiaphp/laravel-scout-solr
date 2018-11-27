@@ -21,7 +21,7 @@
         "solarium/solarium": "~4.0"
     },
     "require-dev": {
-        "illuminate/bus": "~5.5",
+        "illuminate/bus": "~5.4.0",
         "minimalcode/search": "^1.0",
         "orchestra/testbench": "~3.4",
         "phpunit/phpunit": "~5.5|~6.0|^7.0",
@@ -46,6 +46,13 @@
                 "Fobia\\Solrquent\\ScoutServiceProvider"
             ]
         }
+    },
+    "scripts": {
+        "tests": "phpunit",
+        "install-phpcsf": "@composer require --dev friendsofphp/php-cs-fixer",
+        "phpcsf": "php-cs-fixer fix --ansi --format=txt -v --diff-format=udiff --diff",
+        "phpcsf-dry": "@composer phpcsf -- --dry-run"
+
     },
     "config": {
         "sort-packages": true,

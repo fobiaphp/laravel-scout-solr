@@ -27,9 +27,13 @@ class ServiceProvider extends BaseServiceProvider
     public function boot()
     {
         resolve(EngineManager::class)->extend('solr', function ($app) {
-            if ($app->has(SolrSearchEngine::class)) {
-                $engine = $app->make(SolrSearchEngine::class);
-            } else {
+            if (version_compare($app->version(), '5.5.0') >= 0) {
+                if ($app->has(SolrSearchEngine::class)) {
+                    $engine = $app->make(SolrSearchEngine::class);
+                }
+            }
+
+            if (empty($engine)) {
                 $client = $app->make('solrquent.solr');
                 $engine = new SolrSearchEngine($client);
             }
@@ -99,11 +103,13 @@ class ServiceProvider extends BaseServiceProvider
     {
         // Solr client instance
         $this->app->singleton('solrquent.solr', function ($app) {
-            if ($app->has(Client::class)) {
-                return $app->make(Client::class);
-            }
-            if ($app->has(SolrClient::class)) {
-                return $app->make(SolrClient::class);
+            if (version_compare($app->version(), '5.5.0') >= 0) {
+                if ($app->has(Client::class)) {
+                    return $app->make(Client::class);
+                }
+                if ($app->has(SolrClient::class)) {
+                    return $app->make(SolrClient::class);
+                }
             }
 
             $config = $app->make('config');

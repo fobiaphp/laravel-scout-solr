@@ -142,4 +142,15 @@ JSON
         $this->assertInstanceOf(ModelsResult::class, $result);
         $this->assertInstanceOf('\Illuminate\Database\Eloquent\Model', $result->getModels()->first());
     }
+
+    public function testPaginateFull()
+    {
+        $model = new ProductSearchable();
+        $result = $model->search('name:2')->paginateFull(3);
+
+        /** @var ModelsResult $result */
+        $this->assertInstanceOf(ModelsResult::class, $result);
+        $this->assertInstanceOf('\Illuminate\Pagination\LengthAwarePaginator', $result->getPaginate());
+        $this->assertInstanceOf('\Illuminate\Database\Eloquent\Model', $result->getPaginate()->first());
+    }
 }

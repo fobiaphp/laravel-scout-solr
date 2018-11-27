@@ -16,7 +16,7 @@
         }
     ],
     "require": {
-        "php": ">=7.0",
+        "php": ">=7.1",
         "laravel/scout": "~6.0",
         "solarium/solarium": "~4.0"
     },

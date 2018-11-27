@@ -3,7 +3,6 @@
 namespace Fobia\Tests;
 
 use Fobia\Solrquent\ScoutSolr\SolrSearchEngine;
-use Fobia\Solrquent\Solr\QueryType\Exec\ExecQuery;
 use Solarium\Client as SolrClient;
 
 require_once __DIR__ . '/TestCase.php';
@@ -13,7 +12,6 @@ require_once __DIR__ . '/TestCase.php';
  */
 class ServiceProviderTest extends TestCase
 {
-
     public function testSolrSearchEngine()
     {
         /** @var \Fobia\Solrquent\ScoutSolr\SolrSearchEngine $engine */

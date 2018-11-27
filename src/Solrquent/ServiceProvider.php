@@ -4,6 +4,7 @@ namespace Fobia\Solrquent;
 
 use Fobia\Solrquent\ScoutSolr\ModelsResult;
 use Fobia\Solrquent\ScoutSolr\SolrSearchEngine;
+use Illuminate\Pagination\Paginator;
 use Illuminate\Support\ServiceProvider as BaseServiceProvider;
 use Laravel\Scout\Builder;
 use Laravel\Scout\EngineManager;
@@ -49,6 +50,23 @@ class ServiceProvider extends BaseServiceProvider
             // return $result;
 
             $modelsResult = new ModelsResult($result, $this->engine(), $this);
+
+            return $modelsResult;
+        });
+
+        Builder::macro('paginateFull', function ($perPage = null, $pageName = 'page', $page = null) {
+            /** @var Builder $builder */
+            /** @var \Solarium\QueryType\Select\Result\Result $result */
+            $builder = $this;
+            $engine = $builder->engine();
+
+            $page = $page ?: Paginator::resolveCurrentPage($pageName);
+            $perPage = $perPage ?: $builder->model->getPerPage();
+
+            $rawResults = $engine->paginate($builder, $perPage, $page);
+
+            $modelsResult = new ModelsResult($rawResults, $engine, $builder);
+            $modelsResult->initPaginate($perPage, $pageName, $page);
 
             return $modelsResult;
         });
@@ -117,6 +135,6 @@ class ServiceProvider extends BaseServiceProvider
 
     public function provides()
     {
-        return ['solrquent.solr', 'solrquent.db.connection', EngineManager::class, SolrClient::class, Client::class,];
+        return ['solrquent.solr', 'solrquent.db.connection', EngineManager::class, SolrClient::class, Client::class, ];
     }
 }

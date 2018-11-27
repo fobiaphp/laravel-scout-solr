@@ -2,6 +2,9 @@
 
 namespace Fobia\Solrquent\ScoutSolr;
 
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Pagination\Paginator;
 use Laravel\Scout\Builder;
 use Laravel\Scout\Engines\Engine;
 use Solarium\Exception\HttpException;
@@ -18,6 +21,11 @@ class ModelsResult extends Result
     protected $models;
 
     /**
+     * @var LengthAwarePaginator
+     */
+    protected $paginate;
+
+    /**
      * Constructor.
      *
      * @param \Solarium\QueryType\Select\Result\Result $result
@@ -31,6 +39,25 @@ class ModelsResult extends Result
         parent::__construct($result->query, $result->response);
 
         $this->models = $engine->map($builder, $this, $builder->model);
+    }
+
+    public function initPaginate($perPage, $pageName = 'page', $page = null)
+    {
+        $results = Collection::make($this->getModels());
+        $paginator = (new LengthAwarePaginator($results, $this->getNumFound(), $perPage, $page, [
+            'path' => Paginator::resolveCurrentPath(),
+            'pageName' => $pageName,
+        ]));
+
+        $this->paginate = $paginator->appends('query', $this->query);
+    }
+
+    /**
+     * @return LengthAwarePaginator
+     */
+    public function getPaginate()
+    {
+        return $this->paginate;
     }
 
     /**

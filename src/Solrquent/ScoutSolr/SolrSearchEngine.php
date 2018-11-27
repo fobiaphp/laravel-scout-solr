@@ -83,7 +83,6 @@ class SolrSearchEngine extends Engine
         $query = $this->client->createUpdate();
 
         $modelsRelations = [];
-        // while ($model = $models->shift()) {
         while (!$models->isEmpty()) {
             /** @var \Illuminate\Database\Eloquent\Model $model */
             $model = $models->shift();
@@ -94,17 +93,15 @@ class SolrSearchEngine extends Engine
                 $array['__soft_deleted'] = $softDeleted;
             }
 
-            // Or Algolia example
-            // $array = array_merge(
-            //     $model->toSearchableArray(), $model->scoutMetadata()
-            // );
-
             // Первичный ключ id для Solr
             $array = array_merge($array, ['id' => $model->getScoutKey()]);
 
             $array = array_filter($array, function ($val) {
                 return !is_null($val);
             });
+            if (!count($array)) {
+                continue;
+            }
 
             $document = $query->createDocument($array);
             $query->addDocument($document);

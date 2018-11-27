@@ -13,22 +13,6 @@ require_once __DIR__ . '/TestCase.php';
  */
 class ServiceProviderTest extends TestCase
 {
-    protected function createCollection()
-    {
-        // http://localhost:8983/solr/admin/collections?_=1542915842468&action=DELETE&name=products&wt=json
-        $solr = $this->app->make('solrquent.solr');
-        /** @var \Solarium\Client $solr */
-        $name = 'products';
-
-        try {
-            $query = new ExecQuery(['handler' => 'collections?action=DELETE&name=' . $name]);
-            $solr->execute($query, 'admin');
-        } catch (\Exception $e) {
-        }
-
-        $query = new ExecQuery(['handler' => 'collections?action=CREATE&name=' . $name . '&numShards=1']);
-        $solr->execute($query, 'admin');
-    }
 
     public function testSolrSearchEngine()
     {

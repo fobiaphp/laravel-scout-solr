@@ -27,10 +27,8 @@ class ServiceProvider extends BaseServiceProvider
     public function boot()
     {
         resolve(EngineManager::class)->extend('solr', function ($app) {
-            if (version_compare($app->version(), '5.5.0') >= 0) {
-                if ($app->has(SolrSearchEngine::class)) {
-                    $engine = $app->make(SolrSearchEngine::class);
-                }
+            if ($app->bound(SolrSearchEngine::class)) {
+                $engine = $app->make(SolrSearchEngine::class);
             }
 
             if (empty($engine)) {
@@ -39,9 +37,6 @@ class ServiceProvider extends BaseServiceProvider
             }
 
             return $engine;
-
-            // $client = $this->app->make('solrquent.solr');
-            // return new SolrSearchEngine($client);
         });
 
         Builder::macro('getFullResult', function () {
@@ -103,13 +98,11 @@ class ServiceProvider extends BaseServiceProvider
     {
         // Solr client instance
         $this->app->singleton('solrquent.solr', function ($app) {
-            if (version_compare($app->version(), '5.5.0') >= 0) {
-                if ($app->has(Client::class)) {
-                    return $app->make(Client::class);
-                }
-                if ($app->has(SolrClient::class)) {
-                    return $app->make(SolrClient::class);
-                }
+            if ($app->bound(Client::class)) {
+                return $app->make(Client::class);
+            }
+            if ($app->bound(SolrClient::class)) {
+                return $app->make(SolrClient::class);
             }
 
             $config = $app->make('config');
@@ -124,6 +117,6 @@ class ServiceProvider extends BaseServiceProvider
 
     public function provides()
     {
-        return ['solrquent.solr', 'solrquent.db.connection', EngineManager::class, SolrClient::class, Client::class, ];
+        return ['solrquent.solr', 'solrquent.db.connection', EngineManager::class, SolrClient::class, Client::class,];
     }
 }
